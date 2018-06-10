@@ -41,6 +41,8 @@ public class JobForm {
     private ArrayList<CoreCompetency> coreCompetencies;
     private ArrayList<PositionType> positionTypes;
 
+
+
     public JobForm() {
 
         JobData jobData = JobData.getInstance();
@@ -114,5 +116,16 @@ public class JobForm {
 
     public int getPositionTypesId() {
         return positionTypesId;
+    }
+    public void setLocationsId(int locationsId) {
+        this.locationsId = locationsId;
+    }
+
+    public void setCoreCompetenciesId(int coreCompetenciesId) {
+        this.coreCompetenciesId = coreCompetenciesId;
+    }
+
+    public void setPositionTypesId(int positionTypesId) {
+        this.positionTypesId = positionTypesId;
     }
 }
