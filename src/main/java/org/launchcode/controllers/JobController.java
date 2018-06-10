@@ -26,7 +26,6 @@ public class JobController {
     public String index(Model model, @PathVariable int id) {
 
         // TODO #1 - get the Job with the given ID and pass it into the view
-        model.addAttribute(new Job());
         model.addAttribute("someJob", jobData.findById(id));
         //Job someJob = jobData.findById(id);
 
@@ -40,20 +39,28 @@ public class JobController {
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String add(Model model, @ModelAttribute @Valid JobForm jobForm, Errors errors){
+    public String add(Model model, @ModelAttribute @Valid JobForm jobForm, Errors errors, String name){
         // TODO #6 - Validate the JobForm model, and if valid, create a
         // new Job and add it to the jobData data store. Then
         // redirect to the job detail view for the new Job.
 
         if (errors.hasErrors()){
-            return "/job/add";
+            return "job/add";
         } else {
-
-
-
 
             Job newJob = new Job();
 
+            name = jobForm.getName();
+            Employer employers = jobData.getEmployers().findById(jobForm.getEmployerId());
+            Location locations = jobData.getLocations().findById(jobForm.getLocationsId());
+            CoreCompetency coreCompetency = jobData.getCoreCompetencies().findById(jobForm.getCoreCompetenciesId());
+            PositionType positionType = jobData.getPositionTypes().findById(jobForm.getPositionTypesId());
+
+            newJob.setName(name);
+            newJob.setEmployer(employers);
+            newJob.setLocation(locations);
+            newJob.setCoreCompetency(coreCompetency);
+            newJob.setPositionType(positionType);
 
 
             model.addAttribute("name", jobForm.getName());
@@ -61,8 +68,12 @@ public class JobController {
             model.addAttribute("locations", jobData.getLocations().findById(jobForm.getLocationsId()));
             model.addAttribute("coreCompetencies", jobData.getCoreCompetencies().findById(jobForm.getCoreCompetenciesId()));
             model.addAttribute("positionTypes", jobData.getPositionTypes().findById(jobForm.getPositionTypesId()));
+            model.addAttribute("Job", newJob);
+
+
 
             jobData.add(newJob);
+
 
 
             return "job-detail";
